@@ -1,25 +1,36 @@
-# encoding: utf-8
+encoding: utf-8
 
-"""
-Parser for Compact XML Expression Language (CXEL) ('see-ex-ell'), a compact
-XML specification language I made up that's useful for producing XML element
-trees suitable for unit testing.
+"""Parser for Compact XML Expression Language (CXEL) ('see-ex-ell').
+
+CXEL is a compact XML specification language I made up that's useful for producing XML
+element trees suitable for unit testing.
 """
 
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from pyparsing import (
-    alphas, alphanums, Combine, dblQuotedString, delimitedList, Forward,
-    Group, Literal, Optional, removeQuotes, stringEnd, Suppress, Word
+    alphas,
+    alphanums,
+    Combine,
+    dblQuotedString,
+    delimitedList,
+    Forward,
+    Group,
+    Literal,
+    Optional,
+    removeQuotes,
+    stringEnd,
+    Suppress,
+    Word,
 )
 
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsmap
 
 
-# ====================================================================
-# api functions
-# ====================================================================
+====================================================================
+api functions
+====================================================================
 
 def element(cxel_str):
     """
@@ -38,9 +49,9 @@ def xml(cxel_str):
     return xml
 
 
-# ====================================================================
-# internals
-# ====================================================================
+====================================================================
+internals
+====================================================================
 
 
 def nsdecls(*nspfxs):
@@ -122,7 +133,11 @@ class Element(object):
         nspfxs = [nspfx(self._tagname, True)]
         for name, val in self._attrs:
             pfx = nspfx(name)
+  <<<<<<< feature/header
             if pfx is None or pfx in nspfxs:
+  =======
+            if pfx is None or pfx in nspfxs or pfx == "xml":
+  >>>>>>> master
                 continue
             nspfxs.append(pfx)
         return nspfxs
@@ -206,11 +221,11 @@ class Element(object):
         return tag
 
 
-# ====================================================================
-# parser
-# ====================================================================
+====================================================================
+parser
+====================================================================
 
-# parse actions ----------------------------------
+parse actions ----------------------------------
 
 def connect_node_children(s, loc, tokens):
     node = tokens[0]
@@ -223,7 +238,7 @@ def connect_root_node_children(root_node):
 
 
 def grammar():
-    # terminals ----------------------------------
+    terminals ----------------------------------
     colon = Literal(':')
     equal = Suppress('=')
     slash = Suppress('/')
@@ -232,20 +247,20 @@ def grammar():
     open_brace = Suppress('{')
     close_brace = Suppress('}')
 
-    # np:tagName ---------------------------------
+    np:tagName ---------------------------------
     nspfx = Word(alphas)
-    local_name = Word(alphas)
+    local_name = Word(alphanums)
     tagname = Combine(nspfx + colon + local_name)
 
-    # np:attr_name=attr_val ----------------------
+    np:attr_name=attr_val ----------------------
     attr_name = Word(alphas + ':')
-    attr_val = Word(alphanums + ' -.%')
+    attr_val = Word(alphanums + ' %-./:_')
     attr_def = Group(attr_name + equal + attr_val)
     attr_list = open_brace + delimitedList(attr_def) + close_brace
 
     text = dblQuotedString.setParseAction(removeQuotes)
 
-    # w:jc{val=right} ----------------------------
+    w:jc{val=right} ----------------------------
     element = (
         tagname('tagname')
         + Group(Optional(attr_list))('attr_list')
@@ -271,5 +286,6 @@ def grammar():
     ).setParseAction(connect_root_node_children)
 
     return root_node
+
 
 root_node = grammar()
