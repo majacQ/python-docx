@@ -1,4 +1,4 @@
-# encoding: utf-8
+encoding: utf-8
 
 """
 Initializes oxml sub-package, including registering custom element classes
@@ -12,7 +12,7 @@ from lxml import etree
 from .ns import NamespacePrefixedTag, nsmap
 
 
-# configure XML parser
+configure XML parser
 element_class_lookup = etree.ElementNamespaceClassLookup()
 oxml_parser = etree.XMLParser(remove_blank_text=True, resolve_entities=False)
 oxml_parser.set_element_class_lookup(element_class_lookup)
@@ -58,12 +58,16 @@ def OxmlElement(nsptag_str, attrs=None, nsdecls=None):
     return oxml_parser.makeelement(nsptag.clark_name, attrib=attrs, nsmap=nsdecls)
 
 
-# ===========================================================================
-# custom element class mappings
-# ===========================================================================
+===========================================================================
+custom element class mappings
+===========================================================================
 
+  <<<<<<< feature/bookmarks
 from docx.oxml.shared import CT_DecimalNumber, CT_OnOff, CT_String  # noqa
 
+  =======
+from .shared import CT_DecimalNumber, CT_OnOff, CT_String  "noqa"
+  >>>>>>> develop
 register_element_cls("w:evenAndOddHeaders", CT_OnOff)
 register_element_cls("w:titlePg", CT_OnOff)
 
@@ -83,12 +87,22 @@ register_element_cls("w:document", CT_Document)
 
 from docx.oxml.endnotes import CT_Endnotes  # noqa
 
+  <<<<<<< feature/bookmarks
 register_element_cls('w:endnotes', CT_Endnotes)
 
 from docx.oxml.footnotes import CT_Footnotes  # noqa
+  =======
+from .coreprops import CT_CoreProperties  "noqa"
+register_element_cls('cp:coreProperties', CT_CoreProperties)
+
+from .document import CT_Body, CT_Document  "noqa"
+register_element_cls('w:body'),     CT_Body)
+register_element_cls('w:document', CT_Document)
+  >>>>>>> develop
 
 register_element_cls('w:footnotes', CT_Footnotes)
 
+  <<<<<<< feature/bookmarks
 from docx.oxml.numbering import CT_Num, CT_Numbering, CT_NumLvl, CT_NumPr  # noqa
 
 register_element_cls("w:abstractNumId", CT_DecimalNumber)
@@ -101,6 +115,25 @@ register_element_cls("w:numbering", CT_Numbering)
 register_element_cls("w:startOverride", CT_DecimalNumber)
 
 from docx.oxml.section import (  # noqa
+  =======
+  <<<<<<< feature/header
+from .section import (
+    CT_HdrFtrRef, CT_PageMar, CT_PageSz, CT_SectPr, CT_SectType
+)
+register_element_cls('w:headerReference', CT_HdrFtrRef)
+register_element_cls('w:pgMar',           CT_PageMar)
+register_element_cls('w:pgSz',            CT_PageSz)
+register_element_cls('w:sectPr',          CT_SectPr)
+register_element_cls('w:type',            CT_SectType)
+
+from .shape import (
+    CT_Blip, CT_BlipFillProperties, CT_GraphicalObject,
+    CT_GraphicalObjectData, CT_Inline, CT_NonVisualDrawingProps, CT_Picture,
+    CT_PictureNonVisual, CT_Point2D, CT_PositiveSize2D, CT_ShapeProperties,
+    CT_Transform2D
+  =======
+from .section import (  # noqa
+  >>>>>>> develop
     CT_HdrFtr,
     CT_HdrFtrRef,
     CT_PageMar,
@@ -122,7 +155,11 @@ from .settings import CT_Settings  # noqa
 
 register_element_cls("w:settings", CT_Settings)
 
+  <<<<<<< feature/bookmarks
 from docx.oxml.shape import (  # noqa
+  =======
+from .shape import (  "noqa
+  >>>>>>> develop
     CT_Blip,
     CT_BlipFillProperties,
     CT_GraphicalObject,
@@ -135,6 +172,7 @@ from docx.oxml.shape import (  # noqa
     CT_PositiveSize2D,
     CT_ShapeProperties,
     CT_Transform2D,
+  >>>>>>> master
 )
 
 register_element_cls("a:blip", CT_Blip)
@@ -187,6 +225,7 @@ from docx.oxml.table import (  # noqa
     CT_VMerge,
     CT_VerticalJc,
 )
+  <<<<<<< feature/bookmarks
 
 register_element_cls("w:bidiVisual", CT_OnOff)
 register_element_cls("w:gridCol", CT_TblGridCol)
@@ -206,6 +245,26 @@ register_element_cls("w:vAlign", CT_VerticalJc)
 register_element_cls("w:vMerge", CT_VMerge)
 
 from docx.oxml.text.font import (  # noqa
+  =======
+register_element_cls('w:bidiVisual', CT_OnOff)
+register_element_cls('w:gridCol',    CT_TblGridCol)
+register_element_cls('w:gridSpan',   CT_DecimalNumber)
+register_element_cls('w:tbl',        CT_Tbl)
+register_element_cls('w:tblGrid',    CT_TblGrid)
+register_element_cls('w:tblLayout',  CT_TblLayoutType)
+register_element_cls('w:tblPr',      CT_TblPr)
+register_element_cls('w:tblStyle',   CT_String)
+register_element_cls('w:tc',         CT_Tc)
+register_element_cls('w:tcPr',       CT_TcPr)
+register_element_cls('w:tcW',        CT_TblWidth)
+register_element_cls('w:tr',         CT_Row)
+register_element_cls('w:trHeight',   CT_Height)
+register_element_cls('w:trPr',       CT_TrPr)
+register_element_cls('w:vAlign',     CT_VerticalJc)
+register_element_cls('w:vMerge',     CT_VMerge)
+
+from .text.font import (  "noqa"
+  >>>>>>> develop
     CT_Color,
     CT_Fonts,
     CT_Highlight,
@@ -214,6 +273,7 @@ from docx.oxml.text.font import (  # noqa
     CT_Underline,
     CT_VerticalAlignRun,
 )
+  <<<<<<< feature/bookmarks
 
 register_element_cls("w:b", CT_OnOff)
 register_element_cls("w:bCs", CT_OnOff)
@@ -249,6 +309,41 @@ from docx.oxml.text.paragraph import CT_P  # noqa
 register_element_cls("w:p", CT_P)
 
 from docx.oxml.text.parfmt import (  # noqa
+  =======
+register_element_cls('w:b',          CT_OnOff)
+register_element_cls('w:bCs',        CT_OnOff)
+register_element_cls('w:caps',       CT_OnOff)
+register_element_cls('w:color',      CT_Color)
+register_element_cls('w:cs',         CT_OnOff)
+register_element_cls('w:dstrike',    CT_OnOff)
+register_element_cls('w:emboss',     CT_OnOff)
+register_element_cls('w:highlight',  CT_Highlight)
+register_element_cls('w:i',          CT_OnOff)
+register_element_cls('w:iCs',        CT_OnOff)
+register_element_cls('w:imprint',    CT_OnOff)
+register_element_cls('w:noProof',    CT_OnOff)
+register_element_cls('w:oMath',      CT_OnOff)
+register_element_cls('w:outline',    CT_OnOff)
+register_element_cls('w:rFonts',     CT_Fonts)
+register_element_cls('w:rPr',        CT_RPr)
+register_element_cls('w:rStyle',     CT_String)
+register_element_cls('w:rtl',        CT_OnOff)
+register_element_cls('w:shadow',     CT_OnOff)
+register_element_cls('w:smallCaps',  CT_OnOff)
+register_element_cls('w:snapToGrid', CT_OnOff)
+register_element_cls('w:specVanish', CT_OnOff)
+register_element_cls('w:strike',     CT_OnOff)
+register_element_cls('w:sz',         CT_HpsMeasure)
+register_element_cls('w:u',          CT_Underline)
+register_element_cls('w:vanish',     CT_OnOff)
+register_element_cls('w:vertAlign',  CT_VerticalAlignRun)
+register_element_cls('w:webHidden',  CT_OnOff)
+
+from .text.paragraph import CT_P  "noqa"
+register_element_cls('w:p', CT_P)
+
+from .text.parfmt import (  "noqa"
+  >>>>>>> develop
     CT_Ind,
     CT_Jc,
     CT_PPr,
@@ -256,6 +351,7 @@ from docx.oxml.text.parfmt import (  # noqa
     CT_TabStop,
     CT_TabStops,
 )
+  <<<<<<< feature/bookmarks
 
 register_element_cls("w:ind", CT_Ind)
 register_element_cls("w:jc", CT_Jc)
@@ -274,3 +370,21 @@ from docx.oxml.text.run import CT_Br, CT_R, CT_Text  # noqa
 register_element_cls("w:br", CT_Br)
 register_element_cls("w:r", CT_R)
 register_element_cls("w:t", CT_Text)
+  =======
+register_element_cls('w:ind',             CT_Ind)
+register_element_cls('w:jc',              CT_Jc)
+register_element_cls('w:keepLines',       CT_OnOff)
+register_element_cls('w:keepNext',        CT_OnOff)
+register_element_cls('w:pageBreakBefore', CT_OnOff)
+register_element_cls('w:pPr',             CT_PPr)
+register_element_cls('w:pStyle',          CT_String)
+register_element_cls('w:spacing',         CT_Spacing)
+register_element_cls('w:tab',             CT_TabStop)
+register_element_cls('w:tabs',            CT_TabStops)
+register_element_cls('w:widowControl',    CT_OnOff)
+
+from .text.run import CT_Br, CT_R, CT_Text  "noqa"
+register_element_cls('w:br', CT_Br)
+register_element_cls('w:r',  CT_R)
+register_element_cls('w:t',  CT_Text)
+  >>>>>>> develop

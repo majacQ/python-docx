@@ -79,8 +79,16 @@ class DescribeDocument(object):
         section = document.add_section(start_type)
 
         assert document.element.xml == expected_xml
+  <<<<<<< feature/bookmarks
         sectPr = document.element.xpath("w:body/w:sectPr")[0]
+  =======
+        sectPr = document.element.xpath('w:body/w:sectPr')[0]
+  <<<<<<< feature/header
+        Section_.assert_called_once_with(sectPr, document)
+  =======
+  >>>>>> develop
         Section_.assert_called_once_with(sectPr, document_part_)
+  >>>>>>> master
         assert section is section_
 
     def it_can_add_a_table(self, add_table_fixture):
@@ -133,8 +141,12 @@ class DescribeDocument(object):
         document = Document(document_elm, document_part_)
 
         sections = document.sections
+  <<<<<<< feature/header
+        Sections_.assert_called_once_with(document._element, document)
+  =======
 
         Sections_.assert_called_once_with(document_elm, document_part_)
+  >>>>>>> master
         assert sections is sections_
 
     def it_provides_access_to_its_settings(self, settings_fixture):
@@ -176,7 +188,7 @@ class DescribeDocument(object):
         assert isinstance(width, Length)
         assert width == expected_value
 
-    # fixtures -------------------------------------------------------
+    fixtures -------------------------------------------------------
 
     @pytest.fixture(
         params=[(0, "Title"), (1, "Heading 1"), (2, "Heading 2"), (9, "Heading 9")]
@@ -291,7 +303,7 @@ class DescribeDocument(object):
         _body_prop_.return_value.tables = tables_
         return document, tables_
 
-    # fixture components ---------------------------------------------
+    fixture components ---------------------------------------------
 
     @pytest.fixture
     def add_paragraph_(self, request):
@@ -393,7 +405,7 @@ class Describe_Body(object):
         assert body._body.xml == expected_xml
         assert _body is body
 
-    # fixtures -------------------------------------------------------
+    fixtures -------------------------------------------------------
 
     @pytest.fixture(
         params=[
